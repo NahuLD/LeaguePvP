@@ -152,5 +152,3 @@ fabric.properties
 
 .gitignore
 .gradle/
-.idea/
-src/
