@@ -25,6 +25,14 @@ jar.manifest.attributes(
         'Main-Class': 'me.nahuld.leaguepvp.Main'
 )
 
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
 shadowJar {
     archiveName = "leaguepvp-v${version}.${extension}"
 }
+
+build.dependsOn shadowJar
