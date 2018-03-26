@@ -1,10 +1,10 @@
 package me.nahuld.leaguepvp;
 
 import co.aikar.commands.*;
+import co.aikar.locales.MessageKey;
 import lombok.Getter;
+import me.nahuld.leaguepvp.arenas.Arena;
 import me.nahuld.leaguepvp.arenas.ArenaManager;
-import me.nahuld.leaguepvp.commands.arenas.ArenaCommand;
-import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -26,6 +26,18 @@ public class Main extends JavaPlugin {
 
         commandManager = new BukkitCommandManager(this);
 
+        commandManager.enableUnstableAPI("help");
+
+        /* DEPENDENCIES */
+        commandManager.registerDependency(ArenaManager.class, arenaManager);
+
+        /* CONTEXTS */
+        CommandContexts contexts = commandManager.getCommandContexts();
+        contexts.registerContext(Arena.class, context -> {
+            return arenaManager.getArenaByName(context.getFirstArg())
+                    .orElseThrow(() -> new InvalidCommandArgument(MessageKey.of("arenas.not-found"), "{name}", context.getFirstArg()));
+        });
+
         this.loadLanguages(Locale.US);
         commandManager.getLocales().setDefaultLocale(Locales.ENGLISH);
 
@@ -39,7 +51,8 @@ public class Main extends JavaPlugin {
 
     private void loadLanguages(Locale... locales) {
         Arrays.stream(locales).forEach(locale -> {
-            String fileName = String.format("%s_%s.yml", locale.getISO3Language(), locale.getISO3Country());
+            String fileName = String.format("lang/%s_%s.yml", locale.getISO3Language(), locale.getISO3Country());
+            saveResource(fileName, false);
             try {
                 commandManager.getLocales().loadYamlLanguageFile(new File(getDataFolder(), fileName), locale);
             } catch (IOException|InvalidConfigurationException ex) {

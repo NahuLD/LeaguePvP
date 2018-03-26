@@ -1,5 +1,10 @@
+arena-command:
+  create-subcommand:
+    description: 'Create a new arena'
+    existing-arena: 'There''s already an arena registered with the name: <c2>{name}</c2>'
+    successfully-created: 'Successfully created arena with the name: <c2>{name}</c2>'
 arenas:
-  existing: 'There''s already an arena registered with the name: <c2>{name}</c2>'
+  not-found: 'No arena could be found with the name <c2>{name}</c2>'
 
 acf-minecraft:
   invalid_world: 'Error: That world does not exist.'
