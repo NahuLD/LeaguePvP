@@ -1,3 +1,6 @@
 name: LeaguePvP
-main: me.nahuld.leaguepvp.Main
 version: 0.0.1-SNAPSHOT
+author: NahuLD
+description: LeaguePvP is an open-source Practice plugin with Leagues for Bukkit/Spigot
+
+main: me.nahuld.leaguepvp.Main

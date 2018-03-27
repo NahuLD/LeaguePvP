@@ -1,8 +1,21 @@
+general:
+  invalid-argument: 'Error: <c2>{arg}</c2> is an invalid argument!'
+
 arena-command:
   create-subcommand:
     description: 'Create a new arena'
     existing-arena: 'There''s already an arena registered with the name: <c2>{name}</c2>'
     successfully-created: 'Successfully created arena with the name: <c2>{name}</c2>'
+  remove-subcommand:
+    description: 'Remove an arena'
+    successfully-removed: 'Successfully remove arena with the name: <c2>{name}</c2>.'
+  rename-subcommand:
+    description: 'Rename an arena'
+    name-changed: 'Name changed from: <c2>{oldName}</c2> to: <c3>{newName}</c3>.'
+  setpost-subcommand:
+    description: 'Set arena positions'
+    position-set: 'Position <c3>{pos}</c3> successfully set.'
+
 arenas:
   not-found: 'No arena could be found with the name <c2>{name}</c2>'
 
