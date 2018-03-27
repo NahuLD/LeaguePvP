@@ -22,14 +22,11 @@ public class ArenaCommand extends BaseCommand {
     @Description("arena-command.arena-subcommand.create.description")
     @HelpSearchTags("create")
     public void create(String name) {
-        if (arenaManager.getArenaByName(name).isPresent()) {
-            getCurrentCommandIssuer().sendError(MessageKey.of("arena-command.create-subcommand.existing-arena"), "{name}", name);
-            return;
-        }
-        Arena newArena = new Arena();
-        newArena.setName(name);
-        arenaManager.getArenaList().add(newArena);
-        getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.create-subcommand.successfully-created"), "{name}", name);
+        if (!arenaManager.add(name))
+            getCurrentCommandIssuer().sendError(MessageKey.of("arena-command.create-subcommand.existing-arena"),
+                    "{name}", name);
+        else getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.create-subcommand.created"),
+                    "{name}", name);
     }
 
     @Subcommand("remove")
@@ -37,7 +34,8 @@ public class ArenaCommand extends BaseCommand {
     @HelpSearchTags("remove")
     public void remove(Arena arena) {
         arenaManager.getArenaList().remove(arena);
-        getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.remove-subcommand.successfully-removed"), "{name}", arena.getName());
+        getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.remove-subcommand.removed"),
+                "{name}", arena.getName());
     }
 
     @Subcommand("rename")

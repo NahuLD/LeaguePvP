@@ -1,14 +1,24 @@
 general:
   invalid-argument: 'Error: <c2>{arg}</c2> is an invalid argument!'
+  not-found: 'No <c2>{type}</c2> could be found with the name: <c3>{name}</c3>'
+
+gametype-command:
+  create-subcommand:
+    description: 'Create a new game-type'
+    existing-gametype: 'There''s already an game-type registered with the name: <c2>{name}</c2>'
+    created: 'Successfully game-type arena with the name: <c2>{name}</c2>'
+  remove-subcommand:
+    description: 'Remove an game-type'
+    removed: 'Successfully removed game-type with the name: <c2>{name}</c2>.'
 
 arena-command:
   create-subcommand:
     description: 'Create a new arena'
     existing-arena: 'There''s already an arena registered with the name: <c2>{name}</c2>'
-    successfully-created: 'Successfully created arena with the name: <c2>{name}</c2>'
+    created: 'Successfully created arena with the name: <c2>{name}</c2>'
   remove-subcommand:
     description: 'Remove an arena'
-    successfully-removed: 'Successfully remove arena with the name: <c2>{name}</c2>.'
+    removed: 'Successfully removed arena with the name: <c2>{name}</c2>.'
   rename-subcommand:
     description: 'Rename an arena'
     name-changed: 'Name changed from: <c2>{oldName}</c2> to: <c3>{newName}</c3>.'
