@@ -53,12 +53,11 @@ public class ArenaCommand extends BaseCommand {
         switch (position) {
             case 2:
                 arena.setPlayerTwo(player.getLocation());
-                getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.setpos-subcommand.position-set"),
-                        "{pos}", String.valueOf(position));
             case 1:
                 arena.setPlayerOne(player.getLocation());
                 getCurrentCommandIssuer().sendInfo(MessageKey.of("arena-command.setpos-subcommand.position-set"),
                         "{pos}", String.valueOf(position));
+                return;
             default: {
                 getCurrentCommandIssuer().sendInfo(MessageKey.of("general.invalid-argument"),
                         "{arg}", String.valueOf(position));

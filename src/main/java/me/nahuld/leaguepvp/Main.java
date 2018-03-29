@@ -19,15 +19,16 @@ import java.util.Locale;
 public class Main extends JavaPlugin {
 
     @Getter private BukkitCommandManager commandManager;
+    private BukkitLocales locales;
 
     @Getter private ArenaManager arenaManager;
     @Getter private GameTypeManager gameTypeManager;
 
     @Override
     public void onEnable() {
+        /* MANAGERS */
         arenaManager = new ArenaManager();
         gameTypeManager = new GameTypeManager();
-
         commandManager = new BukkitCommandManager(this);
 
         commandManager.enableUnstableAPI("help");
@@ -45,9 +46,11 @@ public class Main extends JavaPlugin {
                 .orElseThrow(() -> new InvalidCommandArgument(MessageKey.of("general.not-found"),
                         "{type}", "GameType", "{name}", context.getFirstArg())));
 
+        /* LOCALES */
+        this.locales = commandManager.getLocales();
         this.loadLanguages(Locale.US);
-        commandManager.getLocales().setDefaultLocale(Locales.ENGLISH);
 
+        /* COMMANDS */
         this.registerCommands();
     }
 
@@ -58,19 +61,26 @@ public class Main extends JavaPlugin {
 
     private void loadLanguages(Locale... locales) {
         Arrays.stream(locales).forEach(locale -> {
-            String fileName = String.format("lang/%s_%s.yml", locale.getISO3Language(), locale.getISO3Country());
+            String fileName = String.format("lang/%s_%s.yml", locale.getLanguage(), locale.getCountry());
             saveResource(fileName, false);
             try {
-                commandManager.getLocales().loadYamlLanguageFile(new File(getDataFolder(), fileName), locale);
+                this.locales.loadYamlLanguageFile(new File(getDataFolder(), fileName), locale);
             } catch (IOException|InvalidConfigurationException ex) {
                 ex.printStackTrace();
             }
         });
+        this.locales.setDefaultLocale(Locale.US);
     }
 
     private void registerCommands() {
         new Reflections("me.nahuld.leaguepvp.commands").getSubTypesOf(BaseCommand.class)
-                .forEach(command -> commandManager.registerCommand(command.cast(BaseCommand.class)));
+                .forEach(command -> {
+                    try {
+                        commandManager.registerCommand(command.newInstance());
+                    } catch (IllegalAccessException|InstantiationException ex) {
+                        ex.printStackTrace();
+                    }
+                });
     }
 
 }
