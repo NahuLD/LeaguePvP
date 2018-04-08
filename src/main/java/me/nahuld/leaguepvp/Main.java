@@ -3,6 +3,7 @@ package me.nahuld.leaguepvp;
 import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import lombok.Getter;
 import me.nahuld.leaguepvp.arenas.Arena;
 import me.nahuld.leaguepvp.arenas.ArenaManager;
@@ -25,6 +26,8 @@ public class Main extends JavaPlugin {
     @Getter private ArenaManager arenaManager;
     @Getter private GameTypeManager gameTypeManager;
 
+    private Injector injector;
+
     @Override
     public void onEnable() {
         /* MANAGERS */
@@ -35,7 +38,7 @@ public class Main extends JavaPlugin {
         commandManager.enableUnstableAPI("help");
 
         /* DEPENDENCIES */
-        Guice.createInjector(new DependencyRegister(this));
+        injector = Guice.createInjector(new DependencyRegister(this));
 
         /* CONTEXTS */
         CommandContexts contexts = commandManager.getCommandContexts();
@@ -74,13 +77,9 @@ public class Main extends JavaPlugin {
 
     private void registerCommands() {
         new Reflections("me.nahuld.leaguepvp.commands").getSubTypesOf(BaseCommand.class)
-                .forEach(command -> {
-                    try {
-                        commandManager.registerCommand(command.newInstance());
-                    } catch (IllegalAccessException|InstantiationException ex) {
-                        ex.printStackTrace();
-                    }
-                });
+                .stream()
+                .map(injector::getInstance)
+                .forEach(commandManager::registerCommand);
     }
 
 }
