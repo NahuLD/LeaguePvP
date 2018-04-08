@@ -2,6 +2,7 @@ package me.nahuld.leaguepvp;
 
 import co.aikar.commands.*;
 import co.aikar.locales.MessageKey;
+import com.google.inject.Guice;
 import lombok.Getter;
 import me.nahuld.leaguepvp.arenas.Arena;
 import me.nahuld.leaguepvp.arenas.ArenaManager;
@@ -34,8 +35,7 @@ public class Main extends JavaPlugin {
         commandManager.enableUnstableAPI("help");
 
         /* DEPENDENCIES */
-        commandManager.registerDependency(ArenaManager.class, arenaManager);
-        commandManager.registerDependency(GameTypeManager.class, gameTypeManager);
+        Guice.createInjector(new DependencyRegister(this));
 
         /* CONTEXTS */
         CommandContexts contexts = commandManager.getCommandContexts();

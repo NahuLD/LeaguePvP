@@ -2,14 +2,24 @@ package me.nahuld.leaguepvp.commands.gametypes;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.HelpCommand;
+import co.aikar.commands.annotation.Subcommand;
 import co.aikar.locales.MessageKey;
+import com.google.inject.Inject;
 import me.nahuld.leaguepvp.gametypes.GameType;
 import me.nahuld.leaguepvp.gametypes.GameTypeManager;
 
 @CommandAlias("gametype|gt")
 public class GameTypeCommand extends BaseCommand {
-    @Dependency private GameTypeManager gameTypeManager;
+
+    private GameTypeManager gameTypeManager;
+
+    @Inject
+    public GameTypeCommand(GameTypeManager gameTypeManager) {
+        this.gameTypeManager = gameTypeManager;
+    }
 
     @HelpCommand
     @Subcommand("help")

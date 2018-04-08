@@ -4,13 +4,20 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import co.aikar.locales.MessageKey;
+import com.google.inject.Inject;
 import me.nahuld.leaguepvp.arenas.Arena;
 import me.nahuld.leaguepvp.arenas.ArenaManager;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arenas|arena")
 public class ArenaCommand extends BaseCommand {
-    @Dependency private ArenaManager arenaManager;
+
+    private ArenaManager arenaManager;
+
+    @Inject
+    public ArenaCommand(ArenaManager arenaManager) {
+        this.arenaManager = arenaManager;
+    }
 
     @HelpCommand
     @Subcommand("help")
